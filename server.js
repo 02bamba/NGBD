@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Connexion à la base de données MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.5');
+mongoose.connect('mongodb://127.0.0.1:27017/DBLP?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.5');
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Erreur de connexion à la base de données :'));
 db.once('open', () => console.log('Connecté à la base de données MongoDB'));
@@ -36,6 +36,12 @@ app.get("/", async (req, res) => {
       { $limit: 50 },
       { $project: { _id: 0, author: "$_id" } }
     ]);
+
+    // Pour afficher tous les livres de types Book
+    // const data = await publis.find({type:"Book"})
+
+    // Pour afficher la liste des livre depuis 2014
+    // const data = await publis.find({year:{$gte:2014}})
     res.json(data);
   } catch (error) {
     console.error("Erreur lors de la récupération des auteurs :", error);
